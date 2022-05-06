@@ -46,7 +46,7 @@ void checkBattery()
     NewBattery n;
     assert(n.checkBatteryIsOk(0,19,1)==false);
     assert(n.checkBatteryIsOk(1,21,1)==false);
-    assert(n.checkBatteryIsOk(1,80,0.7)==false); 
+    assert(n.checkBatteryIsOk(1,81,0.7)==false); 
     assert(n.checkBatteryIsOk(0,79,0.7)==false);
     assert(n.checkBatteryIsOk(1,21,0.7)==true);
     assert(n.checkBatteryIsOk(44,79,0.7)==true);
