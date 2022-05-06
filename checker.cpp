@@ -26,8 +26,7 @@ class NewBattery:public Battery
         if(soc < 20 || soc > 80)
             return false;
         else
-            return true;
-        
+            return true;        
     }
     bool checkChargeRateIsInRange(float chargeRate)
     {
@@ -42,9 +41,17 @@ class NewBattery:public Battery
     }
 };
 
+void checkBattery()
+{
+    assert(checkBatteryIsOk(0,19,1)==false);
+    assert(checkBatteryIsOk(1,21,1)==false);
+    assert(checkBatteryIsOk(1,80,0.7)==false); 
+    assert(checkBatteryIsOk(0,79,0.7)==false);
+    assert(checkBatteryIsOk(1,21,0.7)==true);
+    assert(checkBatteryIsOk(44,79,0.7)==true);
+}
 
 int main() 
 {
-   NewBattery t;
-   assert(t.checkBatteryIsOk(10,30,0.7)==true);
+   checkBattery();
 }
