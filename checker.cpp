@@ -54,7 +54,7 @@ void checkBattery()
     assert(n.checkBatteryIsOk(44,79,0.7)==true);
     
     //Check if temperature in range
-    assert(n.checkTempIsInRange(0)==true)
+    assert((n.checkTempIsInRange(0))==true)
     assert(n.checkTempIsInRange(45)==true)
     assert(n.checkTempIsInRange(-1)==false)
     assert(n.checkTempIsInRange(46)==false)
