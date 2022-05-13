@@ -21,7 +21,7 @@ class NewBattery:public Battery
     public:
     bool checkTempIsInRange(float temperature,int mintemp,int maxtemp)
     {
-        if(valueIsInRange(temp,mintemp,maxtemp))
+        if(valueIsInRange(temperature,mintemp,maxtemp))
             return true;
         else 
             return false;
