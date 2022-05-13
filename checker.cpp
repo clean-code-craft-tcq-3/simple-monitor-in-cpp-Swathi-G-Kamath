@@ -10,8 +10,8 @@ using namespace std;
 class Battery{
     public:
         float temperature,soc,chargeRate;
-        bool checkTempIsInRange(float temp);
-        bool checkSocIsInRange(float soc);
+        bool checkTempIsInRange(float temp,int max,int min);
+        bool checkSocIsInRange(float soc,int max, int min);
         bool checkChargeRateIsInRange(float chargeRate);
         bool valueIsInRange(float value, int min, int max); 
         bool checkBatteryIsOk(float temp ,float soc ,float chargeRate);
