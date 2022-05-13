@@ -44,6 +44,8 @@ class NewBattery:public Battery
 void checkBattery()
 {
     NewBattery n;
+    
+    //Check if temp is in range
     assert(n.checkBatteryIsOk(0,19,1)==false);
     assert(n.checkBatteryIsOk(1,21,1)==false);
     assert(n.checkBatteryIsOk(1,81,0.7)==false); 
@@ -51,18 +53,18 @@ void checkBattery()
     assert(n.checkBatteryIsOk(1,21,0.7)==true);
     assert(n.checkBatteryIsOk(44,79,0.7)==true);
     
-    //Check for the soc in range
+    //Check if soc in range
     assert(n.checkSocIsInRange(20)==true)
     assert(n.checkSocIsInRange(80)==true)
     assert(n.checkSocIsInRange(19)==false)
     assert(n.checkSocIsInRange(81)==false)
     assert(n.checkSocIsInRange(21)==true)
         
-    //Check for soc in range
+    //Check if chargerate in range
     assert(n.checkChargeRateIsInRange(0.8)==true)
-    assert(n.checkTempIsInRange(0.9)==false)
-    assert(n.checkTempIsInRange(0.7)==true)
-    assert(n.checkTempIsInRange(0)==true)
+    assert(n.checkChargeRateIsInRange(0.9)==false)
+    assert(n.checkChargeRateIsInRange(0.7)==true)
+    assert(n.checkChargeRateIsInRange(0)==true)
          
 }
 
