@@ -67,19 +67,19 @@ void checkBattery()
     assert(n.checkBatteryIsOk(44,79,0.7)==true);
     
     //Check if temperature in range
-    assert(n.checkTempIsInRange(0)==true);
-    assert(n.checkTempIsInRange(45)==true);
-    assert(n.checkTempIsInRange(-1)==false);
-    assert(n.checkTempIsInRange(46)==false);
-    assert(n.checkTempIsInRange(40)==true);   
+    assert(n.checkTempIsInRange(0,mintemp,maxtemp)==true);
+    assert(n.checkTempIsInRange(45,mintemp,maxtemp)==true);
+    assert(n.checkTempIsInRange(-1,mintemp,maxtemp)==false);
+    assert(n.checkTempIsInRange(46,mintemp,maxtemp)==false);
+    assert(n.checkTempIsInRange(40,mintemp,maxtemp)==true);   
     
     
     //Check if soc in range
-    assert(n.checkSocIsInRange(20)==true);
-    assert(n.checkSocIsInRange(80)==true);
-    assert(n.checkSocIsInRange(19)==false);
-    assert(n.checkSocIsInRange(81)==false);
-    assert(n.checkSocIsInRange(21)==true);
+    assert(n.checkSocIsInRange(20,minsoc,maxsoc)==true);
+    assert(n.checkSocIsInRange(80,minsoc,maxsoc)==true);
+    assert(n.checkSocIsInRange(19,minsoc,maxsoc)==false);
+    assert(n.checkSocIsInRange(81,minsoc,maxsoc)==false);
+    assert(n.checkSocIsInRange(21,minsoc,maxsoc)==true);
         
     //Check if chargerate in range
     assert(n.checkChargeRateIsInRange(0.8)==false);
