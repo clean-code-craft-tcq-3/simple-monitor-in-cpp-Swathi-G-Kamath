@@ -5,10 +5,10 @@ using namespace std;
 class Battery{
     public:
         float temperature,soc,chargeRate;
-    bool checkTempIsInRange(float t);
-    bool checkSocIsInRange(float s);
-    bool checkChargeRateIsInRange(float c);
-    bool checkBatteryIsOk(float t,float s ,float c);
+        bool checkTempIsInRange(float temp);
+        bool checkSocIsInRange(float soc);
+        bool checkChargeRateIsInRange(float chargeRate);
+        bool checkBatteryIsOk(float temp ,float soc ,float chargeRate);
 };
 
 class NewBattery:public Battery
@@ -37,7 +37,7 @@ class NewBattery:public Battery
     }
     bool checkBatteryIsOk(float temp,float soc ,float chargerate)
     {
-        return(checkTempIsInRange(t)&&checkSocIsInRange(s)&&checkChargeRateIsInRange(c));
+        return(checkTempIsInRange(temp)&&checkSocIsInRange(soc)&&checkChargeRateIsInRange(chargerate));
     }
 };
 
