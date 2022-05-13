@@ -30,7 +30,7 @@ class NewBattery:public Battery
     }
     bool checkChargeRateIsInRange(float chargeRate)
     {
-        if(chargeRate>0.8)
+        if(chargeRate>=0.8)
             return false;
         else 
             return true;
