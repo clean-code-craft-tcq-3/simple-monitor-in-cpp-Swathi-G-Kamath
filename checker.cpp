@@ -45,13 +45,21 @@ void checkBattery()
 {
     NewBattery n;
     
-    //Check if temp is in range
+    //Check if battery is ok
     assert(n.checkBatteryIsOk(0,19,1)==false);
     assert(n.checkBatteryIsOk(1,21,1)==false);
     assert(n.checkBatteryIsOk(1,81,0.7)==false); 
     assert(n.checkBatteryIsOk(-1,79,0.7)==false);
     assert(n.checkBatteryIsOk(1,21,0.7)==true);
     assert(n.checkBatteryIsOk(44,79,0.7)==true);
+    
+    //Check if temperature in range
+    assert(n.checkTempIsInRange(0)==true)
+    assert(n.checkTempIsInRange(45)==true)
+    assert(n.checkTempIsInRange(-1)==false)
+    assert(n.checkTempIsInRange(46)==false)
+    assert(n.checkTempIsInRange(40)==true)   
+    
     
     //Check if soc in range
     assert(n.checkSocIsInRange(20)==true)
