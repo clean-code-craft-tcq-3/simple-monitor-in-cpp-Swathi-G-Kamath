@@ -2,31 +2,37 @@
 #include <iostream>
 using namespace std;
 
+#define MINTEMP 0
+#define MAXTEMP 45
+#define MINSOC 20
+#define MAXSOC 80
+
 class Battery{
     public:
         float temperature,soc,chargeRate;
         bool checkTempIsInRange(float temp);
         bool checkSocIsInRange(float soc);
         bool checkChargeRateIsInRange(float chargeRate);
+        bool valueIsInRange(float value, int min, int max); 
         bool checkBatteryIsOk(float temp ,float soc ,float chargeRate);
 };
 
 class NewBattery:public Battery
 {  
     public:
-    bool checkTempIsInRange(float temperature)
+    bool checkTempIsInRange(float temperature,int MINTEMP,int MAXTEMP)
     {
-        if(temperature < 0 || temperature > 45)
-            return false;
+        if((valueIsInRange(temp,MINTEMP,MAXTEMP))
+            return true;
         else 
-        return true;
-    }
-    bool checkSocIsInRange(float soc)
-    {
-        if(soc < 20 || soc > 80)
             return false;
+    }
+    bool checkSocIsInRange(float soc,int MINSOC,int MAXSOC)
+    {
+        if((valueIsInRange(temp,MINSOC,MAXSOC))
+            return true;
         else
-            return true;        
+            return false;        
     }
     bool checkChargeRateIsInRange(float chargeRate)
     {
@@ -35,9 +41,17 @@ class NewBattery:public Battery
         else 
             return true;
     }
+    bool valueIsInRange(float value, int min, int max)
+    {
+       if(value < min || value > max)
+         return false;
+       else
+         return true;
+    }
+       
     bool checkBatteryIsOk(float temp,float soc ,float chargerate)
     {
-        return(checkTempIsInRange(temp)&&checkSocIsInRange(soc)&&checkChargeRateIsInRange(chargerate));
+        return(checkTempIsInRange(temp,MINTEMP,MAXTEMP)&&checkSocIsInRange(soc,MINSOC,MAXSOC)&&checkChargeRateIsInRange(chargerate));
     }
 };
 
