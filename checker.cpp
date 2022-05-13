@@ -29,7 +29,7 @@ class NewBattery:public Battery
     }
     bool checkSocIsInRange(float soc,int MINSOC,int MAXSOC)
     {
-        if((valueIsInRange(temp,MINSOC,MAXSOC))
+        if((valueIsInRange(soc,MINSOC,MAXSOC))
             return true;
         else
             return false;        
