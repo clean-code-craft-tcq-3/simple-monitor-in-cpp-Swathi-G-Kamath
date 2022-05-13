@@ -35,7 +35,7 @@ class NewBattery:public Battery
         else 
             return true;
     }
-    bool checkBatteryIsOk(float t,float s ,float c)
+    bool checkBatteryIsOk(float temp,float soc ,float chargerate)
     {
         return(checkTempIsInRange(t)&&checkSocIsInRange(s)&&checkChargeRateIsInRange(c));
     }
@@ -50,6 +50,20 @@ void checkBattery()
     assert(n.checkBatteryIsOk(-1,79,0.7)==false);
     assert(n.checkBatteryIsOk(1,21,0.7)==true);
     assert(n.checkBatteryIsOk(44,79,0.7)==true);
+    
+    //Check for the soc in range
+    assert(n.checkSocIsInRange(20)==true)
+    assert(n.checkSocIsInRange(80)==true)
+    assert(n.checkSocIsInRange(19)==false)
+    assert(n.checkSocIsInRange(81)==false)
+    assert(n.checkSocIsInRange(21)==true)
+        
+    //Check for soc in range
+    assert(n.checkChargeRateIsInRange(0.8)==true)
+    assert(n.checkTempIsInRange(0.9)==false)
+    assert(n.checkTempIsInRange(0.7)==true)
+    assert(n.checkTempIsInRange(0)==true)
+         
 }
 
 int main() 
