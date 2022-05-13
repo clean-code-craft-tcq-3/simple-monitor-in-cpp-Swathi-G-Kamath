@@ -69,7 +69,7 @@ void checkBattery()
     assert(n.checkSocIsInRange(21)==true);
         
     //Check if chargerate in range
-    assert(n.checkChargeRateIsInRange(0.8)==true);
+    assert(n.checkChargeRateIsInRange(0.8)==false);
     assert(n.checkChargeRateIsInRange(0.9)==false);
     assert(n.checkChargeRateIsInRange(0.7)==true);
     assert(n.checkChargeRateIsInRange(0)==true);
