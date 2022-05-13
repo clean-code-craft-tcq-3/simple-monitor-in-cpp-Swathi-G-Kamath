@@ -2,10 +2,7 @@
 #include <iostream>
 
 
-#define MINTEMP 0
-#define MAXTEMP 45
-#define MINSOC 20
-#define MAXSOC 80
+int const mintemp= 0,maxtemp=45,minsoc=20,maxsoc=80;
 
 using namespace std;
 
@@ -22,16 +19,16 @@ class Battery{
 class NewBattery:public Battery
 {  
     public:
-    bool checkTempIsInRange(float temperature,int MINTEMP,int MAXTEMP)
+    bool checkTempIsInRange(float temperature,int mintemp,int maxtemp)
     {
-        if(valueIsInRange(temp,MINTEMP,MAXTEMP))
+        if(valueIsInRange(temp,mintemp,maxtemp))
             return true;
         else 
             return false;
     }
-    bool checkSocIsInRange(float soc,int MINSOC,int MAXSOC)
+    bool checkSocIsInRange(float soc,int minsoc,int maxsoc)
     {
-        if(valueIsInRange(soc,MINSOC,MAXSOC))
+        if(valueIsInRange(soc,minsoc,maxsoc))
             return true;
         else
             return false;        
@@ -53,7 +50,7 @@ class NewBattery:public Battery
        
     bool checkBatteryIsOk(float temp,float soc ,float chargerate)
     {
-        return(checkTempIsInRange(temp,MINTEMP,MAXTEMP)&&checkSocIsInRange(soc,MINSOC,MAXSOC)&&checkChargeRateIsInRange(chargerate));
+        return(checkTempIsInRange(temp,mintemp,maxtemp)&&checkSocIsInRange(soc,minsoc,maxsoc)&&checkChargeRateIsInRange(chargerate));
     }
 };
 
