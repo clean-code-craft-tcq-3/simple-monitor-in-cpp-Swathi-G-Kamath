@@ -1,11 +1,13 @@
 #include <assert.h>
 #include <iostream>
-using namespace std;
+
 
 #define MINTEMP 0
 #define MAXTEMP 45
 #define MINSOC 20
 #define MAXSOC 80
+
+using namespace std;
 
 class Battery{
     public:
@@ -22,14 +24,14 @@ class NewBattery:public Battery
     public:
     bool checkTempIsInRange(float temperature,int MINTEMP,int MAXTEMP)
     {
-        if((valueIsInRange(temp,MINTEMP,MAXTEMP))
+        if(valueIsInRange(temp,MINTEMP,MAXTEMP))
             return true;
         else 
             return false;
     }
     bool checkSocIsInRange(float soc,int MINSOC,int MAXSOC)
     {
-        if((valueIsInRange(soc,MINSOC,MAXSOC))
+        if(valueIsInRange(soc,MINSOC,MAXSOC))
             return true;
         else
             return false;        
