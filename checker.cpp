@@ -3,7 +3,7 @@
 #include "string.h"
 
 int const mintemp = 0, maxtemp = 45, minsoc = 20, maxsoc = 80;
-const char* lang = "English";
+char* lang = "English";
 
 using namespace std;
 
@@ -26,8 +26,11 @@ public:
 
     bool checkBatteryIsOk(float temp, float soc, float chargeRate);
 
-    void LogWarninginEnglish(char* msg);
-    void LogWarninginGerman(char* msg);
+    void LogHighTempWarning(char* msg);
+    void LogLowTempWarning(char* msg);
+
+    void LogHighSocWarning(char* msg);
+    void LogLowSocWarning(char* msg);
 
 };
 
@@ -95,68 +98,79 @@ public:
         return(checkTempIsInRange(temp, mintemp, maxtemp) && checkSocIsInRange(soc, minsoc, maxsoc) && checkChargeRateIsInRange(chargerate));
     }
 
-    bool checkTempIsInWarningRange(float temp, const char* lang)
+    bool checkTempIsInWarningRange(float temp, char* lang)
     {
         int warninglevel = valuesIsInWarningRange(temp, mintemp, maxtemp, lowlimtempwarn, highlimtempwarn);
         switch (warninglevel)
         {
         case 1:
-            if (!strcmp(lang, "English"))
-            {
-                msg = "Warning: Temp is at the lower range\n";
-                LogWarninginEnglish(msg);
-            }
-            if (!strcmp(lang, "German"))
-            {
-                msg = "Warning in German Lang\n";
-                LogWarninginGerman(msg);
-            }
+            LogLowTempWarning(lang);
             return true;
         case 2:
-            if (!strcmp(lang, "English"))
-            {
-                msg = "Warning: Temp is at the higher range\n";
-                LogWarninginEnglish(msg);
-            }
-            if (!strcmp(lang, "German"))
-            {
-                msg = "Warning in German Lang\n";
-                LogWarninginGerman(msg);
-            }
+            LogHighTempWarning(lang);
             return true;
         }
         return false;
     }
 
-    bool checkSocIsInWarningRange(float soc, const char* lang)
+    void LogHighTempWarning(char* lang)
+    {
+        if (!strcmp(lang, "English"))
+        {
+            cout << "Warning: Approaching High Temperature Range";
+        }
+        if (!strcmp(lang, "German"))
+        {
+            cout << "Warnung: Annäherung an den hohen Temperaturbereich";
+        }
+    }
+
+    void LogLowTempWarning(char* lang)
+    {
+        if (!strcmp(lang, "English"))
+        {
+            cout << "Warning: Approaching High Temperature Range";
+        }
+        if (!strcmp(lang, "German"))
+        {
+            cout << "Warnung: Annäherung an den niedrigen Temperaturbereich";
+        }
+    }
+
+    void LogHighSocWarning(char* lang)
+    {
+        if (!strcmp(lang, "English"))
+        {
+            cout << "Warning: Approaching charge-peak";
+        }
+        if (!strcmp(lang, "German"))
+        {
+            cout << "Warnung: Ladespitze nähert sich";
+        }
+    }
+
+    void LogLowSocWarning(char* lang)
+    {
+        if (!strcmp(lang, "English"))
+        {
+            cout << "Warning: Approaching discharge";
+        }
+        if (!strcmp(lang, "German"))
+        {
+            cout << "Warnung:  Naht Entladung";
+        }
+    }
+    bool checkSocIsInWarningRange(float soc, char* lang)
     {
         int warninglevel = valuesIsInWarningRange(soc, minsoc, maxsoc, lowlimsocwarn, highlimsocwarn);
         cout << " warninglevel: " << warninglevel << "\n\n";
         switch (warninglevel)
         {
         case 1:
-            if (!strcmp(lang, "English"))
-            {
-                msg = "Warning: Approaching discharge\n";
-                LogWarninginEnglish(msg);
-            }
-            if (!strcmp(lang, "German"))
-            {
-                msg = "Warning in German Lang\n";
-                LogWarninginGerman(msg);
-            }
+            LogLowSocWarning(lang);
             return true;
         case 2:
-            if (!strcmp(lang, "English"))
-            {
-                msg = "Warning: Approaching charge-peak\n";
-                LogWarninginEnglish(msg);
-            }
-            if (!strcmp(lang, "German"))
-            {
-                msg = "Warning in German Lang\n";
-                LogWarninginGerman(msg);
-            }
+            LogHighSocWarning(lang);
             return true;
         }
         return false;
@@ -168,36 +182,25 @@ public:
         {
             if (!strcmp(lang, "English"))
             {
-                msg = "Warning: Charge rate is in warning zone\n";
-                LogWarninginEnglish(msg);
+                cout << "Warning: Charge rate is in warning zone\n";
+
             }
             if (!strcmp(lang, "German"))
             {
-                msg = "Warning in German Lang\n";
-                LogWarninginGerman(msg);
+                cout << "Warning in German";
             }
             return true;
         }
         return false;
     }
 
-    void LogWarninginEnglish(char* a)
-    {
-        cout << msg;
-    }
-
-    void LogWarninginGerman(char* a)
-    {
-        cout << msg;
-    }
-
     int valuesIsInWarningRange(float value, float min, float max, float minwarn, float maxwarn)
     {
-        if (min < value && value <= minwarn)
+        if (min < value <= minwarn)
         {
             return LOW_LIMIT_WARNING;
         }
-        if (maxwarn <= value && value < max)
+        if (maxwarn <= value  < max)
         {
             return HIGH_LIMIT_WARNING;
         }
