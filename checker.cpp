@@ -1,95 +1,263 @@
 #include <assert.h>
 #include <iostream>
+#include "string.h"
 
-
-int const mintemp= 0,maxtemp=45,minsoc=20,maxsoc=80;
+int const mintemp = 0, maxtemp = 45, minsoc = 20, maxsoc = 80;
+const char* lang = "English";
 
 using namespace std;
 
-class Battery{
-    public:
-        float temperature,soc,chargeRate;
-        bool checkTempIsInRange(float temp,int max,int min);
-        bool checkSocIsInRange(float soc,int max, int min);
-        bool checkChargeRateIsInRange(float chargeRate);
-        bool valueIsInRange(float value, int min, int max); 
-        bool checkBatteryIsOk(float temp ,float soc ,float chargeRate);
+class Battery {
+public:
+    float temperature, soc, chargeRate;
+
+    bool checkTempIsInRange(float temp, int max, int min);
+    bool checkTempIsInWarningRange(float temp, int minwarn, int maxwarn);
+
+    bool checkSocIsInRange(float soc, int max, int min);
+    bool checkSocIsInWarningRange(float soc, int minwarn, int maxwarn);
+
+    bool checkChargeRateIsInRange(float chargeRate);
+    bool checkChargeRateIsInWarningRange(float chargeRate, int minwarn, int maxwarn);
+
+
+    bool valueIsInRange(float value, int min, int max);
+    bool valuesIsInWarningRange(float value, int min, int max);
+
+    bool checkBatteryIsOk(float temp, float soc, float chargeRate);
+
+    void LogWarninginEnglish(char* msg);
+    void LogWarninginGerman(char* msg);
+
 };
 
-class NewBattery:public Battery
-{  
-    public:
-    bool checkTempIsInRange(float temperature,int mintemp,int maxtemp)
+class NewBattery :public Battery
+{
+public:
+    char* msg;
+
+    enum warninglevel
     {
-        if(valueIsInRange(temperature,mintemp,maxtemp))
-            return true;
-        else 
+        discharge,
+        peak
+    };
+
+    enum warningsoclevel
+    {
+        LOW_LIMIT_BREACH = 0,
+        LOW_LIMIT_WARNING = 1,
+        NORMAL = 3,
+        HIGH_LIMIT_WARNING = 2,
+        HIGH_LIMIT_BREACH = 4
+    };
+
+    float lowlimtempwarn = mintemp + (0.05 * maxtemp);
+    float highlimtempwarn = maxtemp - (0.05 * maxtemp);
+    float lowlimsocwarn = minsoc + (0.05 * maxsoc);
+    float highlimsocwarn = maxsoc - (0.05 * maxsoc);
+    float chargeratewarn = 0.8 - (0.8 * 0.05);
+
+
+    bool checkTempIsInRange(float temperature, int mintemp, int maxtemp)
+    {
+        if (valueIsInRange(temperature, mintemp, maxtemp))
+            return NORMAL;
+        else
             return false;
     }
-    bool checkSocIsInRange(float soc,int minsoc,int maxsoc)
+
+    bool checkSocIsInRange(float soc, int minsoc, int maxsoc)
     {
-        if(valueIsInRange(soc,minsoc,maxsoc))
-            return true;
+        if (valueIsInRange(soc, minsoc, maxsoc))
+            return NORMAL;
         else
-            return false;        
+            return false;
     }
+
     bool checkChargeRateIsInRange(float chargeRate)
     {
-        if(chargeRate>=0.8)
+        if (chargeRate >= 0.8)
             return false;
-        else 
-            return true;
+        else
+            return NORMAL;
     }
+
     bool valueIsInRange(float value, int min, int max)
     {
-       if(value < min || value > max)
-         return false;
-       else
-         return true;
+        if (value < min || value > max)
+            return false;
+        else
+            return true;
     }
-       
-    bool checkBatteryIsOk(float temp,float soc ,float chargerate)
+
+    bool checkBatteryIsOk(float temp, float soc, float chargerate)
     {
-        return(checkTempIsInRange(temp,mintemp,maxtemp)&&checkSocIsInRange(soc,minsoc,maxsoc)&&checkChargeRateIsInRange(chargerate));
+        return(checkTempIsInRange(temp, mintemp, maxtemp) && checkSocIsInRange(soc, minsoc, maxsoc) && checkChargeRateIsInRange(chargerate));
+    }
+
+    bool checkTempIsInWarningRange(float temp, const char* lang)
+    {
+        int warninglevel = valuesIsInWarningRange(temp, mintemp, maxtemp, lowlimtempwarn, highlimtempwarn);
+        switch (warninglevel)
+        {
+        case 1:
+            if (!strcmp(lang, "English"))
+            {
+                msg = "Warning: Temp is at the lower range\n";
+                LogWarninginEnglish(msg);
+            }
+            if (!strcmp(lang, "German"))
+            {
+                msg = "Warning in German Lang\n";
+                LogWarninginGerman(msg);
+            }
+            return true;
+        case 2:
+            if (!strcmp(lang, "English"))
+            {
+                msg = "Warning: Temp is at the higher range\n";
+                LogWarninginEnglish(msg);
+            }
+            if (!strcmp(lang, "German"))
+            {
+                msg = "Warning in German Lang\n";
+                LogWarninginGerman(msg);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    bool checkSocIsInWarningRange(float soc, const char* lang)
+    {
+        int warninglevel = valuesIsInWarningRange(soc, minsoc, maxsoc, lowlimsocwarn, highlimsocwarn);
+        cout << " warninglevel: " << warninglevel << "\n\n";
+        switch (warninglevel)
+        {
+        case 1:
+            if (!strcmp(lang, "English"))
+            {
+                msg = "Warning: Approaching discharge\n";
+                LogWarninginEnglish(msg);
+            }
+            if (!strcmp(lang, "German"))
+            {
+                msg = "Warning in German Lang\n";
+                LogWarninginGerman(msg);
+            }
+            return true;
+        case 2:
+            if (!strcmp(lang, "English"))
+            {
+                msg = "Warning: Approaching charge-peak\n";
+                LogWarninginEnglish(msg);
+            }
+            if (!strcmp(lang, "German"))
+            {
+                msg = "Warning in German Lang\n";
+                LogWarninginGerman(msg);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    bool checkChargeRateIsInWarningRange(float chargerate, const char* lang)
+    {
+        if (0.8 > chargerate > chargeratewarn)
+        {
+            if (!strcmp(lang, "English"))
+            {
+                msg = "Warning: Charge rate is in warning zone\n";
+                LogWarninginEnglish(msg);
+            }
+            if (!strcmp(lang, "German"))
+            {
+                msg = "Warning in German Lang\n";
+                LogWarninginGerman(msg);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    void LogWarninginEnglish(char* a)
+    {
+        cout << msg;
+    }
+
+    void LogWarninginGerman(char* a)
+    {
+        cout << msg;
+    }
+
+    int valuesIsInWarningRange(float value, float min, float max, float minwarn, float maxwarn)
+    {
+        if (min < value && value <= minwarn)
+        {
+            return LOW_LIMIT_WARNING;
+        }
+        if (maxwarn <= value && value < max)
+        {
+            return HIGH_LIMIT_WARNING;
+        }
     }
 };
 
 void checkBattery()
 {
     NewBattery n;
-    
+
     //Check if battery is ok
-    assert(n.checkBatteryIsOk(0,19,1)==false);
-    assert(n.checkBatteryIsOk(1,21,1)==false);
-    assert(n.checkBatteryIsOk(1,81,0.7)==false); 
-    assert(n.checkBatteryIsOk(-1,79,0.7)==false);
-    assert(n.checkBatteryIsOk(1,21,0.7)==true);
-    assert(n.checkBatteryIsOk(44,79,0.7)==true);
-    
+    assert(n.checkBatteryIsOk(0, 19, 1) == false);
+    assert(n.checkBatteryIsOk(1, 21, 1) == false);
+    assert(n.checkBatteryIsOk(1, 81, 0.7) == false);
+    assert(n.checkBatteryIsOk(-1, 79, 0.7) == false);
+    assert(n.checkBatteryIsOk(1, 21, 0.7) == true);
+    assert(n.checkBatteryIsOk(44, 79, 0.7) == true);
+
     //Check if temperature in range
-    assert(n.checkTempIsInRange(0,mintemp,maxtemp)==true);
-    assert(n.checkTempIsInRange(45,mintemp,maxtemp)==true);
-    assert(n.checkTempIsInRange(-1,mintemp,maxtemp)==false);
-    assert(n.checkTempIsInRange(46,mintemp,maxtemp)==false);
-    assert(n.checkTempIsInRange(40,mintemp,maxtemp)==true);   
-    
-    
+    assert(n.checkTempIsInRange(0, mintemp, maxtemp) == true);
+    assert(n.checkTempIsInRange(45, mintemp, maxtemp) == true);
+    assert(n.checkTempIsInRange(-1, mintemp, maxtemp) == false);
+    assert(n.checkTempIsInRange(46, mintemp, maxtemp) == false);
+    assert(n.checkTempIsInRange(40, mintemp, maxtemp) == true);
+
     //Check if soc in range
-    assert(n.checkSocIsInRange(20,minsoc,maxsoc)==true);
-    assert(n.checkSocIsInRange(80,minsoc,maxsoc)==true);
-    assert(n.checkSocIsInRange(19,minsoc,maxsoc)==false);
-    assert(n.checkSocIsInRange(81,minsoc,maxsoc)==false);
-    assert(n.checkSocIsInRange(21,minsoc,maxsoc)==true);
-        
+    assert(n.checkSocIsInRange(20, minsoc, maxsoc) == true);
+    assert(n.checkSocIsInRange(80, minsoc, maxsoc) == true);
+    assert(n.checkSocIsInRange(19, minsoc, maxsoc) == false);
+    assert(n.checkSocIsInRange(81, minsoc, maxsoc) == false);
+    assert(n.checkSocIsInRange(21, minsoc, maxsoc) == true);
+
     //Check if chargerate in range
-    assert(n.checkChargeRateIsInRange(0.8)==false);
-    assert(n.checkChargeRateIsInRange(0.9)==false);
-    assert(n.checkChargeRateIsInRange(0.7)==true);
-    assert(n.checkChargeRateIsInRange(0)==true);
-         
+    assert(n.checkChargeRateIsInRange(0.8) == false);
+    assert(n.checkChargeRateIsInRange(0.9) == false);
+    assert(n.checkChargeRateIsInRange(0.7) == true);
+    assert(n.checkChargeRateIsInRange(0) == true);
+
+    //check temp warning levels
+    assert(n.checkTempIsInWarningRange(1, "English") == true);
+    assert(n.checkTempIsInWarningRange(2, "English") == true);
+    assert(n.checkTempIsInWarningRange(43, "English") == true);
+    assert(n.checkTempIsInWarningRange(44, "English") == true);
+
+    //Check soc warning levels
+    assert(n.checkSocIsInWarningRange(21, "English") == true);
+    assert(n.checkSocIsInWarningRange(22, "English") == true);
+    assert(n.checkSocIsInWarningRange(23, "English") == true);
+    assert(n.checkSocIsInWarningRange(24, "English") == true);
+    assert(n.checkSocIsInWarningRange(77, "English") == true);
+    assert(n.checkSocIsInWarningRange(78, "English") == true);
+    assert(n.checkSocIsInWarningRange(79, "English") == true);
+
+    //Check charge rate warnings
+    assert(n.checkChargeRateIsInWarningRange(0.79, "English") == true);
+    assert(n.checkChargeRateIsInWarningRange(0.77, "English") == true);
+    assert(n.checkChargeRateIsInWarningRange(0.78, "English") == true);
 }
 
-int main() 
+int main()
 {
-   checkBattery();
+    checkBattery();
 }
