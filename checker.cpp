@@ -180,16 +180,16 @@ public:
     {
         if (0.8 > chargerate > chargeratewarn)
         {
-            if (!strcmp(lang, "English"))
-            {
-                cout << "Warning: Charge rate is in warning zone\n";
-
-            }
-            if (!strcmp(lang, "German"))
-            {
-                cout << "Warning in German";
-            }
-            return true;
+            
+           switch(lang):
+            case "English":
+                cout << "Warning:Charge rate is out of range";
+                return 1;
+            break;
+            case "German":
+                cout << "Warning:German warning";
+                return 1;
+            break;
         }
         return false;
     }
