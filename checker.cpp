@@ -3,7 +3,7 @@
 #include "string.h"
 
 int const mintemp = 0, maxtemp = 45, minsoc = 20, maxsoc = 80;
-char* lang = "English";
+char* lang ;
 
 using namespace std;
 
@@ -112,58 +112,10 @@ public:
         }
         return false;
     }
-
-    void LogHighTempWarning(char* lang)
-    {
-        if (!strcmp(lang, "English"))
-        {
-            cout << "Warning: Approaching High Temperature Range";
-        }
-        if (!strcmp(lang, "German"))
-        {
-            cout << "Warnung: Annäherung an den hohen Temperaturbereich";
-        }
-    }
-
-    void LogLowTempWarning(char* lang)
-    {
-        if (!strcmp(lang, "English"))
-        {
-            cout << "Warning: Approaching High Temperature Range";
-        }
-        if (!strcmp(lang, "German"))
-        {
-            cout << "Warnung: Annäherung an den niedrigen Temperaturbereich";
-        }
-    }
-
-    void LogHighSocWarning(char* lang)
-    {
-        if (!strcmp(lang, "English"))
-        {
-            cout << "Warning: Approaching charge-peak";
-        }
-        if (!strcmp(lang, "German"))
-        {
-            cout << "Warnung: Ladespitze nähert sich";
-        }
-    }
-
-    void LogLowSocWarning(char* lang)
-    {
-        if (!strcmp(lang, "English"))
-        {
-            cout << "Warning: Approaching discharge";
-        }
-        if (!strcmp(lang, "German"))
-        {
-            cout << "Warnung:  Naht Entladung";
-        }
-    }
+    
     bool checkSocIsInWarningRange(float soc, char* lang)
     {
         int warninglevel = valuesIsInWarningRange(soc, minsoc, maxsoc, lowlimsocwarn, highlimsocwarn);
-        cout << " warninglevel: " << warninglevel << "\n\n";
         switch (warninglevel)
         {
         case 1:
@@ -176,31 +128,83 @@ public:
         return false;
     }
 
-    bool checkChargeRateIsInWarningRange(float chargerate, const char* lang)
+    bool checkChargeRateIsInWarningRange(float chargerate, char* lang)
     {
         if (0.8 > chargerate > chargeratewarn)
         {
-            
-           switch(lang):
-            case "English":
-                cout << "Warning:Charge rate is out of range";
-                return 1;
-            break;
-            case "German":
-                cout << "Warning:German warning";
-                return 1;
-            break;
+           LogChargeRateWarning(lang);
+           return true;
         }
         return false;
     }
 
+    void LogHighTempWarning(char* lang)
+    {
+        if (!strcmp(lang, "English"))
+        {
+            cout << "Warning: Approaching High Temperature Range\n";
+        }
+        if (!strcmp(lang, "German"))
+        {
+            cout << "Warnung: Annäherung an den hohen Temperaturbereich\n";
+        }
+    }
+
+    void LogLowTempWarning(char* lang)
+    {
+        if (!strcmp(lang, "English"))
+        {
+            cout << "Warning: Approaching Low Temperature Range\n";
+        }
+        if (!strcmp(lang, "German"))
+        {
+            cout << "Warnung: Annäherung an den niedrigen Temperaturbereich\n";
+        }
+    }
+
+    void LogHighSocWarning(char* lang)
+    {
+        if (!strcmp(lang, "English"))
+        {
+            cout << "Warning: Approaching charge-peak\n";
+        }
+        if (!strcmp(lang, "German"))
+        {
+            cout << "Warnung: Ladespitze nähert sich\n";
+        }
+    }
+
+    void LogLowSocWarning(char* lang)
+    {
+        if (!strcmp(lang, "English"))
+        {
+            cout << "Warning: Approaching discharge\n";
+        }
+        if (!strcmp(lang, "German"))
+        {
+            cout << "Warnung:  Naht Entladung\n";
+        }
+    }
+    
+    void LogChargeRateWarning(char *lang)
+    {
+         if (!strcmp(lang, "English"))
+        {
+            cout << "Warning: ChargeRate is high\n ";
+        }
+        if (!strcmp(lang, "German"))
+        {
+            cout << "Warnung:  Naht Entladung\n";
+        }
+    }
+
     int valuesIsInWarningRange(float value, float min, float max, float minwarn, float maxwarn)
     {
-        if (min < value <= minwarn)
+        if (min < value && value <= minwarn)
         {
             return LOW_LIMIT_WARNING;
         }
-        if (maxwarn <= value  < max)
+        if (maxwarn <= value && value < max)
         {
             return HIGH_LIMIT_WARNING;
         }
@@ -242,6 +246,8 @@ void checkBattery()
     //check temp warning levels
     assert(n.checkTempIsInWarningRange(1, "English") == true);
     assert(n.checkTempIsInWarningRange(2, "English") == true);
+    assert(n.checkTempIsInWarningRange(1, "German") == true);
+    assert(n.checkTempIsInWarningRange(2, "German") == true);
     assert(n.checkTempIsInWarningRange(43, "English") == true);
     assert(n.checkTempIsInWarningRange(44, "English") == true);
 
@@ -253,11 +259,14 @@ void checkBattery()
     assert(n.checkSocIsInWarningRange(77, "English") == true);
     assert(n.checkSocIsInWarningRange(78, "English") == true);
     assert(n.checkSocIsInWarningRange(79, "English") == true);
+    assert(n.checkSocIsInWarningRange(78, "German") == true);
+    assert(n.checkSocIsInWarningRange(79, "German") == true);
 
     //Check charge rate warnings
     assert(n.checkChargeRateIsInWarningRange(0.79, "English") == true);
     assert(n.checkChargeRateIsInWarningRange(0.77, "English") == true);
     assert(n.checkChargeRateIsInWarningRange(0.78, "English") == true);
+    assert(n.checkChargeRateIsInWarningRange(0.78, "German") == true);
 }
 
 int main()
