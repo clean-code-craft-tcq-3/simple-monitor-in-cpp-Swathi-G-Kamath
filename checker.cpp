@@ -3,7 +3,7 @@
 #include "string.h"
 
 int const mintemp = 0, maxtemp = 45, minsoc = 20, maxsoc = 80;
-char* lang ;
+char* lang;
 
 using namespace std;
 
@@ -112,7 +112,7 @@ public:
         }
         return false;
     }
-    
+
     bool checkSocIsInWarningRange(float soc, char* lang)
     {
         int warninglevel = valuesIsInWarningRange(soc, minsoc, maxsoc, lowlimsocwarn, highlimsocwarn);
@@ -132,8 +132,8 @@ public:
     {
         if (0.8 > chargerate > chargeratewarn)
         {
-           LogChargeRateWarning(lang);
-           return true;
+            LogChargeRateWarning(lang);
+            return true;
         }
         return false;
     }
@@ -185,10 +185,10 @@ public:
             cout << "Warnung:  Naht Entladung\n";
         }
     }
-    
-    void LogChargeRateWarning(char *lang)
+
+    void LogChargeRateWarning(char* lang)
     {
-         if (!strcmp(lang, "English"))
+        if (!strcmp(lang, "English"))
         {
             cout << "Warning: ChargeRate is high\n ";
         }
@@ -200,12 +200,16 @@ public:
 
     int valuesIsInWarningRange(float value, float min, float max, float minwarn, float maxwarn)
     {
-        if (min < value && value <= minwarn)
+       int a=min <value,b=value<=minwarn,lowlimit=a&&b;
+       int c=maxwarn <=value,d=value<max,highlimit=c&&d;
+
+        if (lowlimit)
         {
             return LOW_LIMIT_WARNING;
         }
-        if (maxwarn <= value && value < max)
+        if (highlimit)
         {
+            
             return HIGH_LIMIT_WARNING;
         }
     }
