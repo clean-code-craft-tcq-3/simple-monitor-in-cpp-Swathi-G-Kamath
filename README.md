@@ -58,8 +58,8 @@ Shorten the Semantic distance
 - Object oriented to encapsulate state with actions
 - Apect oriented to capture repeating aspects
 
-Extensions
-Extension 1: Early Warning
+## Extensions
+## Extension 1: Early Warning
 Customers need early warnings to take action, in addition to the alarm that you print after the limit is breached. Introduce a ‘warning’ level with a tolerance of 5% of the upper-limit.
 
 Example: If the SoC needs to be between 20 and 80, the warning-tolerance is 5% of 80 = 4. Warnings need to be displayed in these ranges:
@@ -68,7 +68,7 @@ Example: If the SoC needs to be between 20 and 80, the warning-tolerance is 5% o
 
 Keep in mind: Though we are starting with warning levels for all parameters, customers may give feedback to have warnings only for some parameters and not others. Minimize the change needed for such ‘tuning’.
 
-Extension 2: Support a language in addition to English
+## Extension 2: Support a language in addition to English
 Our market has expanded to German-speaking countries! Switch the language of the printed messages based on a global variable.
 
 Use Google translate if you aren’t familiar with German.
