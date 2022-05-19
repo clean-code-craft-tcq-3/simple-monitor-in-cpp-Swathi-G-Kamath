@@ -95,9 +95,9 @@ public:
             return true;
     }
 
-    bool checkBatteryIsOk(float temp, float soc, float chargerate)
+    bool checkBatteryIsOk(float temp, float soc, float chargerate, char *lang)
     {
-        return(checkTempIsInRange(temp, mintemp, maxtemp) && checkSocIsInRange(soc, minsoc, maxsoc) && checkChargeRateIsInRange(chargerate));
+        return((!checkTempIsInWarningRange(temp,lang))&&((!checkSocIsInWarningRange(soc,lang)))&&(!checkChargeRateIsInWarningRange(chargerate,lang))&&checkTempIsInRange(temp, mintemp, maxtemp) && checkSocIsInRange(soc, minsoc, maxsoc) && checkChargeRateIsInRange(chargerate));
     }
 
     bool checkTempIsInWarningRange(float temp, char* lang)
@@ -235,12 +235,12 @@ void checkBattery()
     NewBattery n;
 
     //Check if battery is ok
-    assert(n.checkBatteryIsOk(0, 19, 1) == false);
-    assert(n.checkBatteryIsOk(1, 21, 1) == false);
-    assert(n.checkBatteryIsOk(1, 81, 0.7) == false);
-    assert(n.checkBatteryIsOk(-1, 79, 0.7) == false);
-    assert(n.checkBatteryIsOk(1, 21, 0.7) == true);
-    assert(n.checkBatteryIsOk(44, 79, 0.7) == true);
+    assert(n.checkBatteryIsOk(0, 19, 1,"English") == false);
+    assert(n.checkBatteryIsOk(1, 21, 1,"English") == false);
+    assert(n.checkBatteryIsOk(1, 81, 0.7,"English") == false);
+    assert(n.checkBatteryIsOk(-1, 79, 0.7,"English") == false);
+    assert(n.checkBatteryIsOk(1, 21, 0.7,"English") == false);
+    assert(n.checkBatteryIsOk(44, 79, 0.7,"English") == false);
 
     //Check if temperature in range
     assert(n.checkTempIsInRange(0, mintemp, maxtemp) == true);
