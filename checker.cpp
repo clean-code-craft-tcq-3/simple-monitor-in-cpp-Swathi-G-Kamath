@@ -97,7 +97,11 @@ public:
 
     bool checkBatteryIsOk(float temp, float soc, float chargerate, char *lang)
     {
-        return((!checkTempIsInWarningRange(temp,lang))&&((!checkSocIsInWarningRange(soc,lang)))&&(!checkChargeRateIsInWarningRange(chargerate,lang))&&checkTempIsInRange(temp, mintemp, maxtemp) && checkSocIsInRange(soc, minsoc, maxsoc) && checkChargeRateIsInRange(chargerate));
+        if(checkTempIsInWarningRange(temp,lang)||checkSocIsInWarningRange(soc,lang)||checkChargeRateIsInWarningRange(chargerate,lang))
+        {
+            return false;
+        }
+        return(checkTempIsInRange(temp, mintemp, maxtemp) && checkSocIsInRange(soc, minsoc, maxsoc) && checkChargeRateIsInRange(chargerate));
     }
 
     bool checkTempIsInWarningRange(float temp, char* lang)
